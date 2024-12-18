@@ -1,11 +1,14 @@
-package ee.ivkhkdev.jptv23libraryjpa.enity;
+package ee.ivkhkdev.jptv23libraryjpa.entity;
 
 import jakarta.persistence.*;
 
+import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
-public class Author {
+public class Author implements Serializable {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Basic()
@@ -13,13 +16,31 @@ public class Author {
     private String firstname;
     private String lastname;
     private boolean available = true;
+    @ManyToMany(mappedBy = "authors")
+    private Set<Book> books = new HashSet<>();
 
     public Author() {
     }
 
-    public Author(String firstname, String lastname) {
+    public Set<Book> getBooks() {
+        return books;
+    }
+
+    public void setBooks(Set<Book> books) {
+        this.books = books;
+    }
+
+    public Author(String firstname, boolean available, String lastname) {
+        this.firstname = firstname;
+        this.available = available;
+        this.lastname = lastname;
+    }
+
+    public Author(String firstname, String lastname, boolean available, Set<Book> books) {
         this.firstname = firstname;
         this.lastname = lastname;
+        this.available = available;
+        this.books = books;
     }
 
     public Long getId() {
@@ -79,6 +100,7 @@ public class Author {
         sb.append(", firstname='").append(firstname).append('\'');
         sb.append(", lastname='").append(lastname).append('\'');
         sb.append(", available=").append(available);
+        sb.append(", books=").append(books);
         sb.append('}');
         return sb.toString();
     }

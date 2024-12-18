@@ -1,7 +1,6 @@
 package ee.ivkhkdev.jptv23libraryjpa.service;
 
-import ee.ivkhkdev.jptv23libraryjpa.enity.Author;
-import ee.ivkhkdev.jptv23libraryjpa.helpers.AppHelper;
+import ee.ivkhkdev.jptv23libraryjpa.entity.Author;
 import ee.ivkhkdev.jptv23libraryjpa.helpers.AuthorHelper;
 import ee.ivkhkdev.jptv23libraryjpa.repository.AuthorRepository;
 import org.springframework.stereotype.Service;
@@ -45,6 +44,6 @@ public class AuthorService implements AppService{
 
     @Override
     public boolean print() {
-        return authorHelper.printList(authorRepository.findAll());
+        return authorHelper.printList(authorRepository.findAll(),true);
     }
 }

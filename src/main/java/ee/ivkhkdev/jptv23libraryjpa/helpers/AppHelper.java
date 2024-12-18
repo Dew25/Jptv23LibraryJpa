@@ -6,5 +6,5 @@ import java.util.Optional;
 public interface AppHelper<T> {
     Optional<T> create();
     Optional<T> update(T t);
-    boolean printList(List<T> ts);
+    boolean printList(List<T> ts,boolean enableAll);
 }
