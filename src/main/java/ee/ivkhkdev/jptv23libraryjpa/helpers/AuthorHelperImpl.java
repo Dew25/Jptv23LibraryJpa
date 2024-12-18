@@ -2,6 +2,7 @@ package ee.ivkhkdev.jptv23libraryjpa.helpers;
 
 import ee.ivkhkdev.jptv23libraryjpa.entity.Author;
 import ee.ivkhkdev.jptv23libraryjpa.input.Input;
+import ee.ivkhkdev.jptv23libraryjpa.repository.AuthorRepository;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -9,10 +10,12 @@ import java.util.List;
 import java.util.Optional;
 @Component
 public class AuthorHelperImpl implements AuthorHelper{
+    private final AuthorRepository authorRepository;
     private Input input;
 
-    public AuthorHelperImpl(Input input) {
+    public AuthorHelperImpl(Input input, AuthorRepository authorRepository) {
         this.input = input;
+        this.authorRepository = authorRepository;
     }
 
     @Override
@@ -77,17 +80,29 @@ public class AuthorHelperImpl implements AuthorHelper{
     }
 
     @Override
-    public Long getIdModifyAuthor(List<Author> authors){
+    public Optional<Long> getIdModifyAuthor(List<Author> authors,boolean enabled){
         this.printList(authors,true);
         System.out.print("Выбери автора для изменения: ");
-        return (long) input.nextInt();
+        Long id = (long) input.nextInt();
+        Optional<Author> optionalAuthor = authorRepository.findById(id);
+        if(optionalAuthor.isPresent()){
+            if(!optionalAuthor.get().isAvailable()){
+                if(!enabled){
+                    System.out.println("Вы выбрали недоступного автора.");
+                    return Optional.empty();
+                }
+            }
+        }
+        return Optional.of(id);
     }
 
+
+
     @Override
-    public List<Long> listIdAuhtorsBook(List<Author> authors) {
+    public List<Long> listIdAuhtorsBook(List<Author> authors,boolean enable) {
         System.out.print("Укажите сколько авторов в книге: ");
         int countAuthorsBook = input.nextInt();
-        this.printList(authors,true);
+        this.printList(authors,enable);
         List<Long> idAuthorsBook = new ArrayList<>();
         for (int i = 0; i < countAuthorsBook; i++) {
             System.out.printf("Выберите автора %d is %d: ",i+1,countAuthorsBook);

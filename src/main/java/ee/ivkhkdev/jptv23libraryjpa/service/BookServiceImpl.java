@@ -33,12 +33,13 @@ public class BookServiceImpl implements BookService{
         try {
             Optional<Book> optionalBook = bookHelper.create();//без автора
             if(optionalBook.isEmpty()) return false;
-            List<Long> listIdAuthorsBook = authorHelper.listIdAuhtorsBook(authorRepository.findAll());
+            List<Long> listIdAuthorsBook = authorHelper.listIdAuhtorsBook(authorRepository.findAll(),true);
             Book book = optionalBook.get();
             for (int i = 0; i < listIdAuthorsBook.size(); i++) {
                 Optional<Author> optionalAuthor = authorRepository.findById(listIdAuthorsBook.get(i));
                 if(optionalAuthor.isPresent()){
                     Author author = optionalAuthor.get();
+                    if(!author.isAvailable()) return false;
                     book.getAuthors().add(author);
                     author.getBooks().add(book);
                 }

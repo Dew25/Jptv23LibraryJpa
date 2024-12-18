@@ -38,8 +38,10 @@ public class AuthorService implements AppService{
 
     }
     private Optional<Author> getAuthorForModify(){
-        Long authorId = authorHelper.getIdModifyAuthor(authorRepository.findAll());
-        return authorRepository.findById(authorId);
+        Optional<Long> optionalAuthorId = authorHelper.getIdModifyAuthor(authorRepository.findAll(),true);
+        if(optionalAuthorId.isEmpty()) return Optional.empty();
+        Optional<Author> optionalAuthor = authorRepository.findById(optionalAuthorId.get());
+        return optionalAuthor;
     }
 
     @Override

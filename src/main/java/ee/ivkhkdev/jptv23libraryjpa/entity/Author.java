@@ -16,7 +16,7 @@ public class Author implements Serializable {
     private String firstname;
     private String lastname;
     private boolean available = true;
-    @ManyToMany(mappedBy = "authors")
+    @ManyToMany(mappedBy = "authors", fetch = FetchType.EAGER)
     private Set<Book> books = new HashSet<>();
 
     public Author() {

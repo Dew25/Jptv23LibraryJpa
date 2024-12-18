@@ -18,12 +18,17 @@ public class BookHellperImpl implements BookHelper{
 
     @Override
     public Optional<Book> create() {
-        Book book = new Book();
-        System.out.print("Название книги: ");
-        book.setTitle(input.nextLine());
-        System.out.print("Год издания книги: ");
-        book.setPublishedYear(input.nextInt());
-        return Optional.empty();
+        try {
+            Book book = new Book();
+            System.out.print("Название книги: ");
+            book.setTitle(input.nextLine());
+            System.out.print("Год издания книги: ");
+            book.setPublishedYear(input.nextInt());
+            return Optional.of(book);
+        }catch (Exception e){
+            return Optional.empty();
+        }
+
     }
 
     @Override

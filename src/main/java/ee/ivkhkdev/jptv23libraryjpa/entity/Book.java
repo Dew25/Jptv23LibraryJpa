@@ -14,13 +14,14 @@ public class Book implements Serializable {
     private Long id;
     private String title;
     private int publishedYear;
-    @ManyToMany(cascade = CascadeType.MERGE)
+    @ManyToMany(cascade = CascadeType.MERGE,fetch = FetchType.EAGER)
     @JoinTable(
             name = "book_author",
             joinColumns = @JoinColumn(name = "book_id"),
             inverseJoinColumns = @JoinColumn(name = "author_id")
     )
     private Set<Author> authors = new HashSet<>();
+    private boolean available = true;
 
     public Book() {
     }
@@ -66,6 +67,14 @@ public class Book implements Serializable {
 
     public void setAuthors(Set<Author> authors) {
         this.authors = authors;
+    }
+
+    public boolean isAvailable() {
+        return available;
+    }
+
+    public void setAvailable(boolean available) {
+        this.available = available;
     }
 
     @Override
